@@ -1,41 +1,41 @@
 const $ = id => document.getElementById(id);
 const genres = new Set();
+const hashtags = [];
 let currentDesign = 'gradient';
 let currentBorder = 'none';
 
-// Title input
+// ============= TÍTULO =============
 $('in-title').oninput = e => {
     $('card-title').textContent = e.target.value || 'Título del Manhwa';
 };
 
-// Description input
+// ============= DESCRIPCIÓN =============
 $('in-desc').oninput = e => {
     const text = e.target.value;
     const length = text.length;
     
     $('card-desc').textContent = text || 'Descripción del manhwa...';
-    $('char-count').textContent = `${length}/200`;
+    $('char-count').textContent = `${length}/300`;
     
-    // Cambiar color del contador según la longitud
     const counter = $('char-count');
-    if (length < 150) {
+    if (length < 200) {
         counter.className = 'text-xs text-slate-500';
-    } else if (length >= 150 && length <= 200) {
+    } else if (length >= 200 && length <= 300) {
         counter.className = 'text-xs text-green-400 font-bold';
     } else {
         counter.className = 'text-xs text-red-400 font-bold';
     }
 };
 
-// Status selector
+// ============= ESTADO =============
 $('in-status').onchange = e => {
     const status = e.target.value;
     const badge = $('status-badge');
     const statusTexts = {
-        ongoing: 'En Emisión',
-        completed: 'Completado',
-        hiatus: 'En Pausa',
-        cancelled: 'Cancelado'
+        ongoing: '📡 En Emisión',
+        completed: '✅ Completado',
+        hiatus: '⏸️ En Pausa',
+        cancelled: '❌ Cancelado'
     };
     
     if (status) {
@@ -47,7 +47,7 @@ $('in-status').onchange = e => {
     }
 };
 
-// Image upload
+// ============= IMAGEN =============
 let imageLoaded = true;
 
 $('in-file').onchange = e => {
@@ -65,7 +65,7 @@ $('in-file').onchange = e => {
     r.readAsDataURL(f);
 };
 
-// Genre toggles
+// ============= GÉNEROS =============
 document.querySelectorAll('.genre-toggle').forEach(btn => {
     btn.onclick = () => {
         const g = btn.dataset.genre;
@@ -75,19 +75,64 @@ document.querySelectorAll('.genre-toggle').forEach(btn => {
             genres.delete(g);
         } else {
             if (genres.size >= 5) {
-                alert('Máximo 5 géneros permitidos');
+                alert('⚠️ Máximo 5 géneros permitidos');
                 return;
             }
             btn.classList.add('active');
             genres.add(g);
         }
         
-        $('card-genres').innerHTML =
-            [...genres].map(g => `<div class="genre-pill">${g}</div>`).join('');
+        updateGenres();
     };
 });
 
-// Tab switching
+function updateGenres() {
+    $('card-genres').innerHTML =
+        [...genres].map(g => `<div class="genre-pill">${g}</div>`).join('');
+}
+
+// ============= HASHTAGS =============
+const hashtagInputs = document.querySelectorAll('.hashtag-input');
+
+hashtagInputs.forEach((input, index) => {
+    input.oninput = (e) => {
+        let value = e.target.value;
+        
+        // Asegurar que comience con #
+        if (value && !value.startsWith('#')) {
+            value = '#' + value;
+            e.target.value = value;
+        }
+        
+        // Remover espacios
+        value = value.replace(/\s/g, '');
+        e.target.value = value;
+        
+        hashtags[index] = value;
+        updateHashtags();
+    };
+});
+
+function updateHashtags() {
+    const validHashtags = hashtags.filter(tag => tag && tag.length > 1);
+    $('card-hashtags').innerHTML = validHashtags.length > 0
+        ? validHashtags.map(tag => `<span class="hashtag">${tag}</span>`).join(' ')
+        : '';
+}
+
+function addHashtag(tag) {
+    // Buscar primer input vacío
+    for (let i = 0; i < hashtagInputs.length; i++) {
+        if (!hashtagInputs[i].value) {
+            hashtagInputs[i].value = tag;
+            hashtags[i] = tag;
+            updateHashtags();
+            break;
+        }
+    }
+}
+
+// ============= TABS =============
 function switchTab(tabName) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -96,7 +141,7 @@ function switchTab(tabName) {
     $(`tab-${tabName}`).classList.add('active');
 }
 
-// Design change
+// ============= DISEÑO =============
 function changeDesign(design) {
     currentDesign = design;
     document.querySelectorAll('[data-design]').forEach(opt => opt.classList.remove('active'));
@@ -106,7 +151,7 @@ function changeDesign(design) {
     overlay.className = `card-overlay-${design}`;
 }
 
-// Border change
+// ============= BORDE =============
 function changeBorder(border) {
     currentBorder = border;
     document.querySelectorAll('[data-border]').forEach(opt => opt.classList.remove('active'));
@@ -116,29 +161,28 @@ function changeBorder(border) {
     target.className = `capture-area shadow-2xl border-${border}-style`;
 }
 
-// Export Ultra HD 4K - VERSIÓN MEJORADA
+// ============= EXPORTAR 4K =============
 function saveCard() {
     if (!imageLoaded) {
-        alert('Espera a que la imagen se cargue completamente.');
+        alert('⏳ Espera a que la imagen se cargue completamente.');
         return;
     }
     
     const node = $('capture-target');
-    const scale = 5;
+    const scale = 5; // 2000x3000px
     
     const btn = event.target;
     const originalText = btn.innerHTML;
     btn.innerHTML = '⏳ Generando imagen HD...';
     btn.disabled = true;
     
-    // Delay para asegurar renderizado completo
     setTimeout(() => {
         domtoimage.toPng(node, {
             width: 400 * scale,
             height: 600 * scale,
             quality: 1,
             style: {
-                transform: 'scale(' + scale + ')',
+                transform: `scale(${scale})`,
                 transformOrigin: 'top left',
                 width: '400px',
                 height: '600px'
@@ -159,7 +203,7 @@ function saveCard() {
             }, 2000);
         })
         .catch(error => {
-            console.error('Error al generar imagen:', error);
+            console.error('Error:', error);
             btn.innerHTML = '❌ Error. Intenta de nuevo';
             setTimeout(() => {
                 btn.innerHTML = originalText;
