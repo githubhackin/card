@@ -49,11 +49,20 @@ $('in-status').onchange = e => {
 };
 
 // Image upload
+let imageLoaded = true; // placeholder is always loaded
+
 $('in-file').onchange = e => {
     const f = e.target.files[0];
     if (!f) return;
     const r = new FileReader();
-    r.onload = ev => $('preview-img').src = ev.target.result;
+    r.onload = ev => {
+        const img = $('preview-img');
+        imageLoaded = false;
+        img.onload = () => {
+            imageLoaded = true;
+        };
+        img.src = ev.target.result;
+    };
     r.readAsDataURL(f);
 };
 
@@ -110,6 +119,11 @@ function changeBorder(border) {
 
 // Export Ultra HD 4K
 function saveCard() {
+    if (!imageLoaded) {
+        alert('Espera a que la imagen se cargue completamente.');
+        return;
+    }
+    
     const node = $('capture-target');
     const scale = 5;
     
@@ -118,36 +132,39 @@ function saveCard() {
     btn.innerHTML = '⏳ Generando imagen HD...';
     btn.disabled = true;
     
-    domtoimage.toPng(node, {
-        quality: 1,
-        width: 400 * scale,
-        height: 600 * scale,
-        style: {
-            transform: `scale(${scale})`,
-            transformOrigin: 'top left',
-            width: '400px',
-            height: '600px'
-        }
-    })
-    .then(dataUrl => {
-        const a = document.createElement('a');
-        const filename = ($('in-title').value || 'manhwa').replace(/\s+/g, '_').toLowerCase();
-        a.download = `card-${filename}-4k.png`;
-        a.href = dataUrl;
-        a.click();
-        
-        btn.innerHTML = '✅ ¡Descargado!';
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }, 2000);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        btn.innerHTML = '❌ Error. Intenta de nuevo';
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }, 2000);
-    });
+    // Pequeño delay para asegurar renderizado
+    setTimeout(() => {
+        domtoimage.toPng(node, {
+            quality: 1,
+            width: 400 * scale,
+            height: 600 * scale,
+            style: {
+                transform: `scale(${scale})`,
+                transformOrigin: 'top left',
+                width: '400px',
+                height: '600px'
+            }
+        })
+        .then(dataUrl => {
+            const a = document.createElement('a');
+            const filename = ($('in-title').value || 'manhwa').replace(/\s+/g, '_').toLowerCase();
+            a.download = `card-${filename}-4k.png`;
+            a.href = dataUrl;
+            a.click();
+            
+            btn.innerHTML = '✅ ¡Descargado!';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            btn.innerHTML = '❌ Error. Intenta de nuevo';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        });
+    }, 500);
 }
