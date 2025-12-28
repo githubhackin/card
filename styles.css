@@ -1,11 +1,13 @@
 /* =========================================================
-   FUENTES
+   POPPINS EMBEBIDA - SIN DEPENDENCIAS EXTERNAS
 ========================================================= */
+
 @font-face {
   font-family: 'PoppinsEmbed';
   src: url('https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -13,6 +15,7 @@
   src: url('https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7Z1xlFd2JQEk.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -20,86 +23,27 @@
   src: url('https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLBT5Z1xlFd2JQEk.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
-}
-
-/* =========================================================
-   BASE
-========================================================= */
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+  font-display: swap;
 }
 
 body {
     font-family: 'PoppinsEmbed', system-ui, sans-serif;
     background: #020617;
     color: white;
-    margin: 0;
-    min-height: 100vh;
 }
 
-/* =========================================================
-   LAYOUT PRINCIPAL
-========================================================= */
-.main-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* En desktop: 2 columnas */
-@media (min-width: 1024px) {
-    .main-container {
-        flex-direction: row;
-        align-items: flex-start;
-    }
-    
-    .preview-section {
-        position: sticky;
-        top: 1.5rem;
-        flex-shrink: 0;
-    }
-    
-    .panel-container {
-        flex: 1;
-    }
-}
-
-/* =========================================================
-   PREVIEW SECTION
-========================================================= */
-.preview-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* =========================================================
-   CARD PREVIEW
-========================================================= */
+/* ================= CARD ================= */
 .capture-area {
-    width: 280px;
-    height: 420px;
-    border-radius: 20px;
+    width: 400px;
+    height: 600px;
+    border-radius: 26px;
     overflow: hidden;
     position: relative;
     background: #0f172a;
 }
 
-@media (min-width: 640px) {
-    .capture-area {
-        width: 350px;
-        height: 525px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .capture-area {
-        width: 400px;
-        height: 600px;
-    }
+.card-content {
+    padding: 26px;
 }
 
 #preview-img {
@@ -124,301 +68,62 @@ body {
 }
 
 .card-content {
-    padding: 16px;
+    padding: 26px;
 }
 
-@media (min-width: 640px) {
-    .card-content {
-        padding: 20px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .card-content {
-        padding: 26px;
-    }
-}
-
-/* =========================================================
-   CARD ELEMENTS
-========================================================= */
+/* ================= GENRES (CENTRADO PERFECTO CON POPPINS) ================= */
 .genre-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
 .genre-pill {
+    display: inline-block;
     background: #475569;
     color: white;
     font-family: 'PoppinsEmbed', system-ui, sans-serif;
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 6px;
+    line-height: 1.3;
+    padding: 6px 14px;
+    border-radius: 8px;
+    white-space: nowrap;
 }
 
-@media (min-width: 640px) {
-    .genre-pill {
-        font-size: 11px;
-        padding: 5px 12px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .genre-pill {
-        font-size: 13px;
-        padding: 6px 14px;
-    }
-}
-
+/* ================= TEXT ================= */
 #card-title {
     font-family: 'PoppinsEmbed', system-ui, sans-serif;
-    font-size: 22px;
+    font-size: 30px;
     font-weight: 900;
     line-height: 1.1;
-    margin-bottom: 6px;
-}
-
-@media (min-width: 640px) {
-    #card-title {
-        font-size: 26px;
-    }
-}
-
-@media (min-width: 1024px) {
-    #card-title {
-        font-size: 30px;
-    }
+    margin-bottom: 8px;
 }
 
 #card-desc {
     font-family: 'PoppinsEmbed', system-ui, sans-serif;
-    font-size: 11px;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.55;
     color: #cbd5e1;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
+    max-height: 100px;
     overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    text-align: justify;
 }
 
-@media (min-width: 640px) {
-    #card-desc {
-        font-size: 12px;
-        -webkit-line-clamp: 5;
-    }
-}
-
-@media (min-width: 1024px) {
-    #card-desc {
-        font-size: 13px;
-    }
-}
-
-.hashtags {
-    margin-top: 6px;
-    font-size: 10px;
-    color: #60a5fa;
-}
-
-@media (min-width: 640px) {
-    .hashtags {
-        font-size: 11px;
-    }
-}
-
-.hashtag {
-    margin-right: 6px;
-}
-
-/* =========================================================
-   STATUS BADGE
-========================================================= */
-.status-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    padding: 3px 8px;
-    border-radius: 6px;
-    font-size: 8px;
-    font-weight: 700;
-    text-transform: uppercase;
-    display: none;
-}
-
-.status-ongoing { background: #10b981; color: white; }
-.status-completed { background: #3b82f6; color: white; }
-.status-hiatus { background: #f59e0b; color: black; }
-.status-cancelled { background: #ef4444; color: white; }
-
-/* =========================================================
-   PANEL DE CONTROLES
-========================================================= */
-.panel-container {
-    background: rgba(15, 23, 42, 0.9);
-    border: 1px solid #334155;
-    border-radius: 16px;
-    padding: 16px;
-}
-
-@media (min-width: 640px) {
-    .panel-container {
-        padding: 20px;
-        border-radius: 20px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .panel-container {
-        padding: 24px;
-        border-radius: 24px;
-    }
-}
-
-.panel-section {
-    border-bottom: 1px solid #334155;
-    padding-bottom: 16px;
-    margin-bottom: 16px;
-}
-
-.panel-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-.section-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #22d3ee;
-    margin-bottom: 12px;
-}
-
-@media (min-width: 640px) {
-    .section-title {
-        font-size: 16px;
-    }
-}
-
-/* =========================================================
-   INPUTS
-========================================================= */
-.input-label {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    color: #64748b;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-}
-
-.input-field {
-    width: 100%;
-    background: #020617;
-    border: 1px solid #334155;
-    color: white;
-    padding: 10px 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
-}
-
-.input-field:focus {
-    border-color: #0ea5e9;
-}
-
-/* =========================================================
-   THEME BUTTONS
-========================================================= */
-.theme-buttons {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-}
-
-@media (min-width: 640px) {
-    .theme-buttons {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-.design-btn {
-    background: #020617;
-    border: 1px solid #334155;
-    border-radius: 8px;
-    padding: 8px;
-    font-weight: 700;
-    font-size: 12px;
-    color: white;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.design-btn.active {
-    background: #7c3aed;
-    border-color: #a855f7;
-}
-
-.design-btn:active {
-    transform: scale(0.95);
-}
-
-/* =========================================================
-   COLOR INPUTS
-========================================================= */
-.color-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.color-input {
-    width: 100%;
-    height: 40px;
-    border-radius: 8px;
-    border: 2px solid #334155;
-    cursor: pointer;
-    background: transparent;
-}
-
-/* =========================================================
-   GENRES GRID
-========================================================= */
-.genres-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    max-height: 200px;
-    overflow-y: auto;
-    padding-right: 4px;
-}
-
-@media (min-width: 640px) {
-    .genres-grid {
-        grid-template-columns: repeat(3, 1fr);
-        max-height: 180px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .genres-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
+/* ================= PANEL ================= */
 .genre-toggle {
     background: #020617;
     border: 1px solid #334155;
-    border-radius: 8px;
-    padding: 8px 6px;
-    font-weight: 600;
-    font-size: 11px;
-    text-align: center;
+    border-radius: 10px;
+    padding: 6px 12px;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s;
+    font-size: 13px;
+    transition: all .2s;
 }
 
 .genre-toggle.active {
@@ -427,82 +132,147 @@ body {
     color: white;
 }
 
-.genre-toggle:active {
-    transform: scale(0.95);
+.genre-toggle:hover {
+    border-color: #64748b;
 }
 
-/* =========================================================
-   FILE INPUT & DOWNLOAD
-========================================================= */
-.file-input {
-    width: 100%;
-    font-size: 13px;
-    color: #94a3b8;
-}
-
-.file-input::file-selector-button {
-    background: #1e293b;
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: 600;
-    margin-right: 12px;
-    cursor: pointer;
-}
-
-.download-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-    border: none;
-    color: white;
-    padding: 14px;
-    border-radius: 12px;
+/* ================= DESIGN BUTTONS ================= */
+.design-btn {
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 6px 12px;
     font-weight: 700;
-    font-size: 14px;
     cursor: pointer;
-    transition: all 0.2s;
+    font-size: 13px;
+    transition: all .2s;
+    color: white;
 }
 
-.download-btn:active {
-    transform: scale(0.98);
+.design-btn.active {
+    background: #7c3aed;
+    border-color: #a855f7;
+    color: white;
 }
 
-/* =========================================================
-   CARD THEMES
-========================================================= */
+.design-btn:hover {
+    border-color: #64748b;
+}
+
+/* ================= PANEL SECTIONS ================= */
+.panel-section {
+    border-bottom: 1px solid #334155;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.panel-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* ================= CARD THEMES ================= */
 .card-default .card-overlay {
-    background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,.85) 35%, rgba(0,0,0,.4) 60%, transparent 100%);
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.85) 35%,
+        rgba(0,0,0,.4) 60%,
+        transparent 100%
+    );
+}
+
+.card-default #card-title {
+    color: white;
 }
 
 .card-dark .card-overlay {
-    background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,.95) 40%, rgba(0,0,0,.6) 70%, transparent 100%);
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.95) 40%,
+        rgba(0,0,0,.6) 70%,
+        transparent 100%
+    );
 }
-.card-dark #card-title { color: #ff6b6b; }
+
+.card-dark #card-title {
+    color: #ff6b6b;
+}
 
 .card-neon .card-overlay {
-    background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,.8) 30%, rgba(0,0,0,.3) 50%, transparent 100%);
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.8) 30%,
+        rgba(0,0,0,.3) 50%,
+        transparent 100%
+    );
 }
-.card-neon #card-title { color: #00ffff; text-shadow: 0 0 10px #00ffff; }
+
+.card-neon #card-title {
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+}
 
 .card-vintage .card-overlay {
-    background: linear-gradient(to top, rgba(139,69,19,1) 0%, rgba(139,69,19,.8) 35%, rgba(139,69,19,.4) 60%, transparent 100%);
-}
-.card-vintage #card-title { color: #ffd700; }
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-.genres-grid::-webkit-scrollbar {
-    width: 4px;
+    background: linear-gradient(
+        to top,
+        rgba(139,69,19,1) 0%,
+        rgba(139,69,19,.8) 35%,
+        rgba(139,69,19,.4) 60%,
+        transparent 100%
+    );
 }
 
-.genres-grid::-webkit-scrollbar-track {
-    background: #0f172a;
-    border-radius: 4px;
+.card-vintage #card-title {
+    color: #ffd700;
+    font-family: serif;
 }
 
-.genres-grid::-webkit-scrollbar-thumb {
-    background: #334155;
-    border-radius: 4px;
+/* ================= STATUS BADGE ================= */
+.status-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 10;
+}
+
+.status-ongoing {
+    background: #10b981;
+    color: white;
+}
+
+.status-completed {
+    background: #3b82f6;
+    color: white;
+}
+
+.status-hiatus {
+    background: #f59e0b;
+    color: black;
+}
+
+.status-cancelled {
+    background: #ef4444;
+    color: white;
+}
+
+/* ================= HASHTAGS ================= */
+.hashtags {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #60a5fa;
+    line-height: 1.4;
+}
+
+.hashtag {
+    margin-right: 8px;
+    color: #60a5fa;
 }
