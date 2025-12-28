@@ -164,39 +164,46 @@ function changeBorder(border) {
 // ============= EXPORTAR 4K =============
 function saveCard() {
     if (!imageLoaded) {
-        alert('⏳ Espera a que la imagen se cargue completamente.');
+        alert('Espera a que la imagen se cargue completamente.');
         return;
     }
     
     const node = $('capture-target');
-    const scale = 5; // 2000x3000px
-    
     const btn = event.target;
     const originalText = btn.innerHTML;
-    btn.innerHTML = '⏳ Generando imagen HD...';
+    btn.innerHTML = 'Generando imagen HD...';
     btn.disabled = true;
+    
+    // Forzar tamaño fijo antes de capturar
+    const originalWidth = node.style.width;
+    const originalHeight = node.style.height;
+    node.style.width = '400px';
+    node.style.height = '600px';
     
     setTimeout(() => {
         domtoimage.toPng(node, {
-            width: 400 * scale,
-            height: 600 * scale,
-            quality: 1,
-            style: {
-                transform: `scale(${scale})`,
-                transformOrigin: 'top left',
-                width: '400px',
-                height: '600px'
-            },
-            cacheBust: true
+            width: 2000,
+            height: 3000,
+            quality: 1.0,
+            bgcolor: '#0f172a',
+            cacheBust: true,
+            imagePlaceholder: undefined,
+            filter: function(element) {
+                return true;
+            }
         })
         .then(dataUrl => {
+            // Restaurar tamaño original
+            node.style.width = originalWidth;
+            node.style.height = originalHeight;
+            
             const a = document.createElement('a');
             const filename = ($('in-title').value || 'manhwa').replace(/\s+/g, '_').toLowerCase();
             a.download = `card-${filename}-4k.png`;
             a.href = dataUrl;
             a.click();
             
-            btn.innerHTML = '✅ ¡Descargado!';
+            btn.innerHTML = 'Descargado';
             setTimeout(() => {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
@@ -204,11 +211,13 @@ function saveCard() {
         })
         .catch(error => {
             console.error('Error:', error);
-            btn.innerHTML = '❌ Error. Intenta de nuevo';
+            node.style.width = originalWidth;
+            node.style.height = originalHeight;
+            btn.innerHTML = 'Error. Intenta de nuevo';
             setTimeout(() => {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }, 2000);
         });
-    }, 500);
+    }, 800);
 }
