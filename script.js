@@ -8,12 +8,11 @@ $('in-title').oninput = e => {
     $('card-title').textContent = e.target.value || 'Título del Manhwa';
 };
 
-// Description input - CORREGIDO: Ahora actualiza correctamente sin necesidad de saltos de línea
+// Description input
 $('in-desc').oninput = e => {
     const text = e.target.value;
     const length = text.length;
     
-    // Actualización corregida: usa textContent en lugar de innerHTML
     $('card-desc').textContent = text || 'Descripción del manhwa...';
     $('char-count').textContent = `${length}/200`;
     
@@ -49,7 +48,7 @@ $('in-status').onchange = e => {
 };
 
 // Image upload
-let imageLoaded = true; // placeholder is always loaded
+let imageLoaded = true;
 
 $('in-file').onchange = e => {
     const f = e.target.files[0];
@@ -117,7 +116,7 @@ function changeBorder(border) {
     target.className = `capture-area shadow-2xl border-${border}-style`;
 }
 
-// Export Ultra HD 4K
+// Export Ultra HD 4K - VERSIÓN MEJORADA
 function saveCard() {
     if (!imageLoaded) {
         alert('Espera a que la imagen se cargue completamente.');
@@ -132,12 +131,19 @@ function saveCard() {
     btn.innerHTML = '⏳ Generando imagen HD...';
     btn.disabled = true;
     
-    // Pequeño delay para asegurar renderizado
+    // Delay para asegurar renderizado completo
     setTimeout(() => {
         domtoimage.toPng(node, {
             width: 400 * scale,
             height: 600 * scale,
-            quality: 1
+            quality: 1,
+            style: {
+                transform: 'scale(' + scale + ')',
+                transformOrigin: 'top left',
+                width: '400px',
+                height: '600px'
+            },
+            cacheBust: true
         })
         .then(dataUrl => {
             const a = document.createElement('a');
@@ -153,7 +159,7 @@ function saveCard() {
             }, 2000);
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error al generar imagen:', error);
             btn.innerHTML = '❌ Error. Intenta de nuevo';
             setTimeout(() => {
                 btn.innerHTML = originalText;
