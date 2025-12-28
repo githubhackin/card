@@ -135,15 +135,9 @@ function saveCard() {
     // Pequeño delay para asegurar renderizado
     setTimeout(() => {
         domtoimage.toPng(node, {
-            quality: 1,
             width: 400 * scale,
             height: 600 * scale,
-            style: {
-                transform: `scale(${scale})`,
-                transformOrigin: 'top left',
-                width: '400px',
-                height: '600px'
-            }
+            quality: 1
         })
         .then(dataUrl => {
             const a = document.createElement('a');
