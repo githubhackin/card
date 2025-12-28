@@ -150,16 +150,18 @@ async function handleDownload() {
         elements.downloadBtn.disabled = true;
         
         const canvas = await html2canvas(elements.card, {
-            scale: 2,
+            scale: 3,
             useCORS: true,
-            backgroundColor: null,
-            logging: false
+            backgroundColor: '#000000',
+            logging: false,
+            imageTimeout: 0,
+            allowTaint: true
         });
         
         const link = document.createElement('a');
         const fileName = state.title ? state.title.replace(/[^a-z0-9]/gi, '-').toLowerCase() : 'manhwa-card';
         link.download = `${fileName}-${Date.now()}.png`;
-        link.href = canvas.toDataURL('image/png');
+        link.href = canvas.toDataURL('image/png', 1.0);
         link.click();
         
     } catch (error) {
