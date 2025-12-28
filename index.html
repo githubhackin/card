@@ -3,256 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Cards de Manhwa</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Manhwa Studio Pro - Completo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&family=Bebas+Neue&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Panel de Controles -->
-        <div class="controls-panel">
-            <div class="header">
-                <h1 class="app-title">✨ Manhwa Card Generator</h1>
-                <p class="subtitle">Crea cards profesionales para tus manhwas favoritos</p>
-            </div>
-
-            <!-- Contenido -->
-            <section class="section">
-                <h2 class="section-title">
-                    <span class="icon">📝</span>
-                    Contenido
-                </h2>
-                <div class="form-group">
-                    <label for="title">Título del Manhwa</label>
-                    <input type="text" id="title" placeholder="Ej: Solo Leveling" class="input-field">
-                </div>
-                <div class="form-group">
-                    <label for="author">Autor</label>
-                    <input type="text" id="author" placeholder="Nombre del autor" class="input-field">
-                </div>
-                <div class="form-group">
-                    <label for="synopsis">
-                        Sinopsis 
-                        <span id="char-counter" class="char-counter">0/400</span>
-                    </label>
-                    <textarea id="synopsis" placeholder="Escribe una sinopsis atractiva..." maxlength="400" class="textarea-field"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="chapters">Capítulos</label>
-                    <input type="number" id="chapters" placeholder="Ej: 150" class="input-field" min="0">
-                </div>
-                <div class="form-group">
-                    <label for="rating">Calificación (1-10)</label>
-                    <div class="rating-container">
-                        <input type="range" id="rating" min="1" max="10" value="8" step="0.1" class="slider">
-                        <span id="rating-value" class="rating-value">8.0</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="hashtags">Hashtags</label>
-                    <input type="text" id="hashtags" placeholder="#manhwa #action #fantasy" class="input-field">
-                </div>
-            </section>
-
-            <!-- Estado -->
-            <section class="section">
-                <h2 class="section-title">
-                    <span class="icon">📊</span>
-                    Estado
-                </h2>
-                <div class="form-group">
-                    <select id="status" class="select-field">
-                        <option value="none">Sin estado</option>
-                        <option value="ongoing">En Emisión</option>
-                        <option value="completed">Completado</option>
-                        <option value="paused">En Pausa</option>
-                        <option value="cancelled">Cancelado</option>
-                        <option value="upcoming">Próximamente</option>
-                    </select>
-                </div>
-            </section>
-
-            <!-- Géneros -->
-            <section class="section">
-                <h2 class="section-title">
-                    <span class="icon">🏷️</span>
-                    Géneros (máximo 5)
-                </h2>
-                <div class="genres-grid" id="genres-container"></div>
-            </section>
-
-            <!-- Diseño -->
-            <section class="section">
-                <h2 class="section-title">
-                    <span class="icon">🎨</span>
-                    Diseño
-                </h2>
-                <div class="form-group">
-                    <label>Tema Visual</label>
-                    <div class="theme-grid">
-                        <label class="theme-card">
-                            <input type="radio" name="theme" value="dark" checked>
-                            <div class="theme-preview theme-dark-preview">
-                                <span>🌙</span>
-                            </div>
-                            <span class="theme-label">Oscuro</span>
-                        </label>
-                        <label class="theme-card">
-                            <input type="radio" name="theme" value="light">
-                            <div class="theme-preview theme-light-preview">
-                                <span>☀️</span>
-                            </div>
-                            <span class="theme-label">Claro</span>
-                        </label>
-                        <label class="theme-card">
-                            <input type="radio" name="theme" value="neon">
-                            <div class="theme-preview theme-neon-preview">
-                                <span>💜</span>
-                            </div>
-                            <span class="theme-label">Neón</span>
-                        </label>
-                        <label class="theme-card">
-                            <input type="radio" name="theme" value="vintage">
-                            <div class="theme-preview theme-vintage-preview">
-                                <span>📜</span>
-                            </div>
-                            <span class="theme-label">Vintage</span>
-                        </label>
-                        <label class="theme-card">
-                            <input type="radio" name="theme" value="gradient">
-                            <div class="theme-preview theme-gradient-preview">
-                                <span>🌈</span>
-                            </div>
-                            <span class="theme-label">Gradient</span>
-                        </label>
-                        <label class="theme-card">
-                            <input type="radio" name="theme" value="glass">
-                            <div class="theme-preview theme-glass-preview">
-                                <span>💎</span>
-                            </div>
-                            <span class="theme-label">Glass</span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="title-size">
-                        Tamaño del Título 
-                        <span id="title-size-value" class="value-display">32px</span>
-                    </label>
-                    <input type="range" id="title-size" min="20" max="48" value="32" class="slider">
-                </div>
-
-                <div class="form-group">
-                    <label for="blur-intensity">
-                        Intensidad del Blur 
-                        <span id="blur-value" class="value-display">30px</span>
-                    </label>
-                    <input type="range" id="blur-intensity" min="0" max="50" value="30" class="slider">
-                </div>
-
-                <div class="color-pickers">
-                    <div class="color-group">
-                        <label for="title-color">Color del Título</label>
-                        <input type="color" id="title-color" value="#ffffff" class="color-input">
-                    </div>
-                    <div class="color-group">
-                        <label for="text-color">Color del Texto</label>
-                        <input type="color" id="text-color" value="#e5e7eb" class="color-input">
-                    </div>
-                    <div class="color-group">
-                        <label for="accent-color">Color de Acento</label>
-                        <input type="color" id="accent-color" value="#a855f7" class="color-input">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="show-watermark" checked>
-                        Mostrar Marca de Agua
-                    </label>
-                </div>
-            </section>
-
-            <!-- Imagen -->
-            <section class="section">
-                <h2 class="section-title">
-                    <span class="icon">🖼️</span>
-                    Imagen de Portada
-                </h2>
-                <div class="form-group">
-                    <label for="cover-image" class="file-upload-btn">
-                        <span class="upload-icon">📁</span>
-                        <span class="upload-text">Seleccionar Imagen</span>
-                        <input type="file" id="cover-image" accept="image/*">
-                    </label>
-                    <span id="file-name" class="file-name">Ningún archivo seleccionado</span>
-                </div>
-                <div class="form-group">
-                    <label for="image-position">Posición de la Imagen</label>
-                    <select id="image-position" class="select-field">
-                        <option value="center">Centrada</option>
-                        <option value="top">Superior</option>
-                        <option value="bottom">Inferior</option>
-                    </select>
-                </div>
-            </section>
-
-            <!-- Botones de Acción -->
-            <div class="actions">
-                <button id="reset-btn" class="btn btn-secondary">
-                    🔄 Resetear
-                </button>
-                <button id="download-btn" class="btn btn-primary">
-                    ⬇️ Descargar Card
-                </button>
-            </div>
-        </div>
-
-        <!-- Panel de Vista Previa -->
-        <div class="preview-panel">
-            <div class="preview-header">
-                <h2 class="preview-title">Vista Previa</h2>
-                <div class="preview-actions">
-                    <button id="zoom-out" class="icon-btn">🔍-</button>
-                    <button id="zoom-reset" class="icon-btn">100%</button>
-                    <button id="zoom-in" class="icon-btn">🔍+</button>
-                </div>
-            </div>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <h1 class="logo">MANHWA<span>STUDIO</span></h1>
             
-            <div class="preview-container" id="preview-container">
-                <div id="card" class="card theme-dark">
-                    <div class="card-image-container">
-                        <div id="card-image" class="card-image">
-                            <span class="placeholder-icon">🖼️</span>
-                        </div>
-                        <div class="card-overlay"></div>
-                        <span id="card-status" class="status-badge hidden"></span>
-                        <div id="card-genres-overlay" class="genres-overlay"></div>
+            <div class="settings-scroll">
+                <section class="panel">
+                    <h3>📝 Información</h3>
+                    <input type="text" id="in-title" placeholder="Título del Manhwa" maxlength="100">
+                    <input type="text" id="in-genres" placeholder="Géneros (Ej: Acción, Magia, Gore)">
+                    <textarea id="in-synop" placeholder="Sinopsis (Texto Justificado)..." maxlength="300"></textarea>
+                    <input type="text" id="in-tags" placeholder="Ej: #acción #reencarnación">
+                </section>
+
+                <section class="panel">
+                    <h3>📊 Estado</h3>
+                    <select id="in-status">
+                        <option value="">Sin Estado</option>
+                        <option value="EN EMISIÓN" data-color="#ff4757">En Emisión</option>
+                        <option value="COMPLETADO" data-color="#2ed573">Completado</option>
+                        <option value="PAUSA" data-color="#ffa502">En Pausa</option>
+                    </select>
+                </section>
+
+                <section class="panel">
+                    <h3>🎨 Estilo</h3>
+                    <div class="color-grid">
+                        <div><label>Título</label><input type="color" id="col-title" value="#ffffff"></div>
+                        <div><label>Fondo Géneros</label><input type="color" id="col-genre" value="#6366f1"></div>
                     </div>
+                </section>
+
+                <section class="panel">
+                    <h3>🖼️ Imagen</h3>
+                    <input type="file" id="in-file" class="file-btn">
+                    <div class="range-grid">
+                        <label>Brillo</label><input type="range" id="range-bright" min="50" max="150" value="100">
+                        <label>Contraste</label><input type="range" id="range-contrast" min="50" max="150" value="100">
+                    </div>
+                </section>
+            </div>
+
+            <button id="download-btn" class="main-btn">⬇️ Descargar Card 4K</button>
+        </aside>
+
+        <main class="preview-zone">
+            <div id="capture-area">
+                <div class="manhwa-card" id="card-element">
+                    <div id="card-bg" class="card-bg"></div>
+                    <div class="card-overlay"></div>
+                    <div id="display-status" class="status-badge" style="display: none;"></div>
+
                     <div class="card-content">
-                        <div class="card-header">
-                            <h3 id="card-title" class="card-title">Título del Manhwa</h3>
-                            <div id="card-rating" class="card-rating">
-                                <span class="rating-number">8.0</span>
-                            </div>
+                        <div id="genres-row" class="genres-row"></div>
+                        
+                        <h2 id="display-title">Título del Manhwa</h2>
+                        
+                        <div class="text-safe-area">
+                            <p id="display-synop">La sinopsis se verá perfectamente justificada en ambos lados, manteniendo la estética profesional.</p>
                         </div>
-                        <p id="card-author" class="card-author"></p>
-                        <p id="card-synopsis" class="card-synopsis">La sinopsis de tu manhwa aparecerá aquí. Agrega una descripción atractiva que capture la esencia de la historia.</p>
-                        <div class="card-footer">
-                            <span id="card-chapters" class="card-chapters"></span>
-                            <p id="card-hashtags" class="card-hashtags"></p>
-                        </div>
+                        
+                        <div id="tags-container" class="tags-row"></div>
                     </div>
-                    <div id="watermark" class="watermark">@ManhwasCommunity</div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
