@@ -3,261 +3,289 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Manhwa Card Maker Pro</title>
+<title>Manhwa Card Maker HD</title>
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="p-6">
+<body class="p-4 md:p-6 flex justify-center">
 
-<div class="max-w-7xl mx-auto">
-    <h1 class="text-4xl font-black text-center mb-8 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-        🎨 Manhwa Card Maker Pro
-    </h1>
+<div class="grid lg:grid-cols-2 gap-6 md:gap-10 max-w-4xl md:max-w-6xl w-full">
 
-    <div class="grid lg:grid-cols-2 gap-10">
+<!-- PANEL -->
+<div class="bg-slate-900/80 p-4 md:p-8 rounded-2xl md:rounded-3xl border border-slate-700 h-fit shadow-2xl">
+    <h2 class="text-2xl font-extrabold mb-6 text-cyan-400">Editor de Card</h2>
 
-        <!-- PANEL DE CONTROL -->
-        <div class="bg-slate-900/80 p-8 rounded-3xl border border-slate-700 h-fit shadow-2xl">
-            
-            <!-- TABS -->
-            <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
-                <button class="tab-btn active" onclick="switchTab('basic')">📝 Básico</button>
-                <button class="tab-btn" onclick="switchTab('genres')">🎭 Géneros</button>
-                <button class="tab-btn" onclick="switchTab('tags')">🏷️ Hashtags</button>
-                <button class="tab-btn" onclick="switchTab('design')">🎨 Diseño</button>
+    <!-- SECCIÓN: BÁSICO -->
+    <div class="panel-section">
+        <h3 class="text-lg font-bold text-cyan-300 mb-4">📝 Básico</h3>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Título</label>
+                <input id="in-title" placeholder="Título del Manhwa"
+                class="w-full bg-slate-950 border border-slate-700 p-3 rounded-xl outline-none focus:border-cyan-500 transition-colors">
             </div>
 
-            <!-- TAB: BÁSICO -->
-            <div id="tab-basic" class="tab-content active space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Título</label>
-                    <input id="in-title" placeholder="Título del Manhwa"
-                    class="w-full bg-slate-950 border border-slate-700 p-3 rounded-xl outline-none focus:border-cyan-500 transition-colors">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Sinopsis</label>
-                    <textarea id="in-desc" rows="4" placeholder="Escribe una descripción atractiva..." maxlength="300"
-                    class="w-full bg-slate-950 border border-slate-700 p-3 rounded-xl outline-none focus:border-cyan-500 transition-colors resize-none"></textarea>
-                    <div class="text-right mt-1">
-                        <span id="char-count" class="text-xs text-slate-500">0/300</span>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Estado</label>
-                    <select id="in-status"
-                    class="w-full bg-slate-950 border border-slate-700 p-3 rounded-xl outline-none focus:border-cyan-500 transition-colors cursor-pointer">
-                        <option value="">Sin estado</option>
-                        <option value="ongoing">📡 En Emisión</option>
-                        <option value="completed">✅ Completado</option>
-                        <option value="hiatus">⏸️ En Pausa</option>
-                        <option value="cancelled">❌ Cancelado</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Portada</label>
-                    <input id="in-file" type="file" accept="image/*"
-                    class="w-full bg-slate-950 border border-slate-700 p-3 rounded-xl outline-none focus:border-cyan-500 transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-600 file:text-white file:font-bold file:cursor-pointer hover:file:bg-cyan-500">
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Sinopsis (150-300 caracteres)</label>
+                <textarea id="in-desc" rows="4" placeholder="Escribe una descripción atractiva..." maxlength="300"
+                class="w-full bg-slate-950 border border-slate-700 p-3 rounded-xl outline-none focus:border-cyan-500 transition-colors resize-none"></textarea>
+                <div class="text-right mt-1">
+                    <span id="char-count" class="text-xs text-slate-500">0/300</span>
                 </div>
             </div>
 
-            <!-- TAB: GÉNEROS -->
-            <div id="tab-genres" class="tab-content">
-                <p class="text-slate-400 text-sm mb-4 font-bold">Selecciona hasta 5 géneros:</p>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-96 overflow-y-auto pr-2">
-                    <!-- Populares -->
-                    <div class="genre-toggle" data-genre="Acción">⚔️ Acción</div>
-                    <div class="genre-toggle" data-genre="Romance">💕 Romance</div>
-                    <div class="genre-toggle" data-genre="Fantasía">🧙 Fantasía</div>
-                    <div class="genre-toggle" data-genre="Drama">🎭 Drama</div>
-                    <div class="genre-toggle" data-genre="Comedia">😂 Comedia</div>
-                    <div class="genre-toggle" data-genre="Aventura">🗺️ Aventura</div>
-                    <div class="genre-toggle" data-genre="Misterio">🔍 Misterio</div>
-                    <div class="genre-toggle" data-genre="Terror">👻 Terror</div>
-                    <div class="genre-toggle" data-genre="Psicológico">🧠 Psicológico</div>
-                    <div class="genre-toggle" data-genre="Thriller">😰 Thriller</div>
-                    
-                    <!-- Específicos Manhwa/Manga -->
-                    <div class="genre-toggle" data-genre="Isekai">🌍 Isekai</div>
-                    <div class="genre-toggle" data-genre="Reencarnación">♻️ Reencarnación</div>
-                    <div class="genre-toggle" data-genre="Regresión">⏪ Regresión</div>
-                    <div class="genre-toggle" data-genre="Sistema">📊 Sistema</div>
-                    <div class="genre-toggle" data-genre="Leveling">📈 Leveling</div>
-                    <div class="genre-toggle" data-genre="Dungeon">🏰 Dungeon</div>
-                    <div class="genre-toggle" data-genre="Murim">🥋 Murim</div>
-                    <div class="genre-toggle" data-genre="Cultivo">🌱 Cultivo</div>
-                    <div class="genre-toggle" data-genre="Artes Marciales">🥊 Artes Marciales</div>
-                    <div class="genre-toggle" data-genre="Magia">✨ Magia</div>
-                    
-                    <!-- Temáticas -->
-                    <div class="genre-toggle" data-genre="Sobrenatural">👁️ Sobrenatural</div>
-                    <div class="genre-toggle" data-genre="Sci-Fi">🚀 Sci-Fi</div>
-                    <div class="genre-toggle" data-genre="Slice of Life">☕ Slice of Life</div>
-                    <div class="genre-toggle" data-genre="Escolar">🎓 Escolar</div>
-                    <div class="genre-toggle" data-genre="Deportes">⚽ Deportes</div>
-                    <div class="genre-toggle" data-genre="Música">🎵 Música</div>
-                    <div class="genre-toggle" data-genre="Cocina">🍳 Cocina</div>
-                    <div class="genre-toggle" data-genre="Médico">⚕️ Médico</div>
-                    <div class="genre-toggle" data-genre="Histórico">📜 Histórico</div>
-                    <div class="genre-toggle" data-genre="Militar">🪖 Militar</div>
-                    
-                    <!-- Tipos de MC -->
-                    <div class="genre-toggle" data-genre="OP MC">💪 OP MC</div>
-                    <div class="genre-toggle" data-genre="Antihéroe">😈 Antihéroe</div>
-                    <div class="genre-toggle" data-genre="Villano">🦹 Villano</div>
-                    <div class="genre-toggle" data-genre="Venganza">⚡ Venganza</div>
-                    
-                    <!-- Romance/Relaciones -->
-                    <div class="genre-toggle" data-genre="Harem">👥 Harem</div>
-                    <div class="genre-toggle" data-genre="Reverse Harem">👤 Reverse Harem</div>
-                    <div class="genre-toggle" data-genre="BL">🏳️‍🌈 BL</div>
-                    <div class="genre-toggle" data-genre="GL">🌈 GL</div>
-                    <div class="genre-toggle" data-genre="Yuri">💜 Yuri</div>
-                    <div class="genre-toggle" data-genre="Yaoi">💙 Yaoi</div>
-                    
-                    <!-- Demografía -->
-                    <div class="genre-toggle" data-genre="Shounen">👦 Shounen</div>
-                    <div class="genre-toggle" data-genre="Shoujo">👧 Shoujo</div>
-                    <div class="genre-toggle" data-genre="Seinen">🧔 Seinen</div>
-                    <div class="genre-toggle" data-genre="Josei">👩 Josei</div>
-                    
-                    <!-- Otros -->
-                    <div class="genre-toggle" data-genre="Apocalíptico">🌋 Apocalíptico</div>
-                    <div class="genre-toggle" data-genre="Post-Apocalíptico">🏚️ Post-Apocalíptico</div>
-                    <div class="genre-toggle" data-genre="Cyberpunk">🤖 Cyberpunk</div>
-                    <div class="genre-toggle" data-genre="Mecha">🦾 Mecha</div>
-                    <div class="genre-toggle" data-genre="Supervivencia">🔥 Supervivencia</div>
-                    <div class="genre-toggle" data-genre="Viaje en el Tiempo">⏰ Viaje en el Tiempo</div>
-                    <div class="genre-toggle" data-genre="Transmigración">🔄 Transmigración</div>
-                    <div class="genre-toggle" data-genre="Posesión">👤 Posesión</div>
-                    <div class="genre-toggle" data-genre="Nobleza">👑 Nobleza</div>
-                    <div class="genre-toggle" data-genre="Realeza">🏛️ Realeza</div>
-                    <div class="genre-toggle" data-genre="Negocios">💼 Negocios</div>
-                    <div class="genre-toggle" data-genre="Crimen">🔫 Crimen</div>
-                    <div class="genre-toggle" data-genre="Gore">🩸 Gore</div>
-                    <div class="genre-toggle" data-genre="Ecchi">😏 Ecchi</div>
-                    <div class="genre-toggle" data-genre="Adulto">🔞 Adulto</div>
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Hashtags (separados por comas)</label>
+                <input id="in-hashtags" placeholder="#manhwa #fantasy #romance"
+                class="w-full bg-slate-950 border border-slate-700 p-3 rounded-xl outline-none focus:border-cyan-500 transition-colors">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Estado</label>
+                <select id="in-status"
+                class="w-full bg-slate-950 border border-slate-700 p-3 rounded-xl outline-none focus:border-cyan-500 transition-colors cursor-pointer">
+                    <option value="">Sin estado</option>
+                    <option value="ongoing">En Emisión</option>
+                    <option value="completed">Completado</option>
+                    <option value="hiatus">En Pausa</option>
+                    <option value="cancelled">Cancelado</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN: DISEÑO -->
+    <div class="panel-section">
+        <h3 class="text-lg font-bold text-cyan-300 mb-4">🎨 Diseño</h3>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Tema</label>
+                <div class="flex gap-2 flex-wrap">
+                    <button class="design-btn active" data-theme="default">Clásico</button>
+                    <button class="design-btn" data-theme="dark">Oscuro</button>
+                    <button class="design-btn" data-theme="neon">Neón</button>
+                    <button class="design-btn" data-theme="vintage">Vintage</button>
                 </div>
             </div>
 
-            <!-- TAB: HASHTAGS -->
-            <div id="tab-tags" class="tab-content space-y-4">
-                <p class="text-slate-400 text-sm mb-4 font-bold">Agrega hasta 3 hashtags personalizados:</p>
-                
-                <div id="hashtags-container" class="space-y-2">
-                    <input type="text" class="hashtag-input" placeholder="#Ejemplo" maxlength="20">
-                    <input type="text" class="hashtag-input" placeholder="#Segundo" maxlength="20">
-                    <input type="text" class="hashtag-input" placeholder="#Tercero" maxlength="20">
-                </div>
-
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-700">
-                    <p class="text-xs text-slate-400 mb-2">💡 Sugerencias populares:</p>
-                    <div class="flex flex-wrap gap-2">
-                        <button class="tag-suggestion" onclick="addHashtag('#MustRead')">#MustRead</button>
-                        <button class="tag-suggestion" onclick="addHashtag('#TopManhwa')">#TopManhwa</button>
-                        <button class="tag-suggestion" onclick="addHashtag('#Recomendado')">#Recomendado</button>
-                        <button class="tag-suggestion" onclick="addHashtag('#Trending')">#Trending</button>
-                        <button class="tag-suggestion" onclick="addHashtag('#NuevoManhwa')">#NuevoManhwa</button>
-                        <button class="tag-suggestion" onclick="addHashtag('#Underrated')">#Underrated</button>
-                    </div>
-                </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Tamaño de Fuente del Título</label>
+                <input type="range" min="24" max="48" value="30" id="title-font-size" class="w-full">
+                <div class="text-center text-xs text-slate-500 mt-1" id="font-size-display">30px</div>
             </div>
 
-            <!-- TAB: DISEÑO -->
-            <div id="tab-design" class="tab-content space-y-6">
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase mb-3">Estilo de Card</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="design-option active" onclick="changeDesign('gradient')" data-design="gradient">
-                            <div class="text-2xl mb-1">🌅</div>
-                            <div class="text-sm">Gradiente Clásico</div>
-                        </div>
-                        <div class="design-option" onclick="changeDesign('dark')" data-design="dark">
-                            <div class="text-2xl mb-1">🌑</div>
-                            <div class="text-sm">Oscuro Intenso</div>
-                        </div>
-                        <div class="design-option" onclick="changeDesign('neon')" data-design="neon">
-                            <div class="text-2xl mb-1">💎</div>
-                            <div class="text-sm">Neón Ciberpunk</div>
-                        </div>
-                        <div class="design-option" onclick="changeDesign('purple')" data-design="purple">
-                            <div class="text-2xl mb-1">🔮</div>
-                            <div class="text-sm">Púrpura Místico</div>
-                        </div>
-                        <div class="design-option" onclick="changeDesign('minimal')" data-design="minimal">
-                            <div class="text-2xl mb-1">⚪</div>
-                            <div class="text-sm">Minimalista</div>
-                        </div>
-                        <div class="design-option" onclick="changeDesign('fire')" data-design="fire">
-                            <div class="text-2xl mb-1">🔥</div>
-                            <div class="text-sm">Fuego Ardiente</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase mb-3">Borde de Card</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="design-option active" onclick="changeBorder('none')" data-border="none">
-                            <div class="text-lg mb-1">⬜</div>
-                            <div class="text-sm">Sin Borde</div>
-                        </div>
-                        <div class="design-option" onclick="changeBorder('thin')" data-border="thin">
-                            <div class="text-lg mb-1">▫️</div>
-                            <div class="text-sm">Delgado</div>
-                        </div>
-                        <div class="design-option" onclick="changeBorder('thick')" data-border="thick">
-                            <div class="text-lg mb-1">⬛</div>
-                            <div class="text-sm">Grueso</div>
-                        </div>
-                        <div class="design-option" onclick="changeBorder('neon')" data-border="neon">
-                            <div class="text-lg mb-1">💠</div>
-                            <div class="text-sm">Neón Azul</div>
-                        </div>
-                        <div class="design-option" onclick="changeBorder('gold')" data-border="gold">
-                            <div class="text-lg mb-1">🟨</div>
-                            <div class="text-sm">Dorado</div>
-                        </div>
-                        <div class="design-option" onclick="changeBorder('purple')" data-border="purple">
-                            <div class="text-lg mb-1">🟪</div>
-                            <div class="text-sm">Púrpura</div>
-                        </div>
-                    </div>
-                </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Color del Título</label>
+                <input type="color" value="#ffffff" id="title-color" class="w-full h-10 rounded-lg border border-slate-700">
             </div>
 
-            <!-- BOTÓN DESCARGAR -->
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Color de la Descripción</label>
+                <input type="color" value="#cbd5e1" id="desc-color" class="w-full h-10 rounded-lg border border-slate-700">
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN: GÉNEROS -->
+    <div class="panel-section">
+        <h3 class="text-lg font-bold text-cyan-300 mb-4">🏷️ Géneros</h3>
+        <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Selecciona Géneros:</p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap gap-2 max-h-64 overflow-y-auto">
+    <div class="genre-toggle" data-genre="Acción">Acción</div>
+    <div class="genre-toggle" data-genre="Aventura">Aventura</div>
+    <div class="genre-toggle" data-genre="Fantasía">Fantasía</div>
+    <div class="genre-toggle" data-genre="Magia">Magia</div>
+    <div class="genre-toggle" data-genre="Supervivencia">Supervivencia</div>
+    <div class="genre-toggle" data-genre="Vida Escolar">Vida Escolar</div>
+
+    <div class="genre-toggle" data-genre="gl">Girls Love</div>
+    <div class="genre-toggle" data-genre="bl">Boys Love</div>
+    <div class="genre-toggle" data-genre="Romance">Romance</div>
+    <div class="genre-toggle" data-genre="Drama">Drama</div>
+    <div class="genre-toggle" data-genre="Comedia">Comedia</div>
+    <div class="genre-toggle" data-genre="Tragedia">Tragedia</div>
+
+    <div class="genre-toggle" data-genre="Reencarnación">Reencarnación</div>
+    <div class="genre-toggle" data-genre="Isekai">Isekai</div>
+    <div class="genre-toggle" data-genre="Regresión">Regresión</div>
+    <div class="genre-toggle" data-genre="Viaje en el Tiempo">Viaje en el Tiempo</div>
+
+    <div class="genre-toggle" data-genre="Cultivación">Cultivación</div>
+    <div class="genre-toggle" data-genre="Artes Marciales">Artes Marciales</div>
+    <div class="genre-toggle" data-genre="Sobrenatural">Sobrenatural</div>
+    <div class="genre-toggle" data-genre="Psicológico">Psicológico</div>
+
+    <div class="genre-toggle" data-genre="Horror">Horror</div>
+    <div class="genre-toggle" data-genre="Misterio">Misterio</div>
+    <div class="genre-toggle" data-genre="Suspenso">Suspenso</div>
+
+    <div class="genre-toggle" data-genre="Sci-Fi">Ciencia Ficción</div>
+    <div class="genre-toggle" data-genre="Apocalíptico">Apocalíptico</div>
+    <div class="genre-toggle" data-genre="Post-Apocalíptico">Post-Apocalíptico</div>
+
+    <div class="genre-toggle" data-genre="Harem">Harem</div>
+    <div class="genre-toggle" data-genre="Reverse Harem">Reverse Harem</div>
+
+    <div class="genre-toggle" data-genre="Militar">Militar</div>
+    <div class="genre-toggle" data-genre="Crimen">Crimen</div>
+    <div class="genre-toggle" data-genre="Deportes">Deportes</div>
+
+    <div class="genre-toggle" data-genre="Gore">Gore</div>
+    <div class="genre-toggle" data-genre="Adulto">Adulto</div>
+    <div class="genre-toggle" data-genre="Yuri">Yuri</div>
+    <div class="genre-toggle" data-genre="Yaoi">Yaoi</div>
+    <div class="genre-toggle" data-genre="Shoujo">Shoujo</div>
+    <div class="genre-toggle" data-genre="Shounen">Shounen</div>
+    <div class="genre-toggle" data-genre="Josei">Josei</div>
+    <div class="genre-toggle" data-genre="Seinen">Seinen</div>
+    <div class="genre-toggle" data-genre="Ecchi">Ecchi</div>
+    <div class="genre-toggle" data-genre="Hentai">Hentai</div>
+    <div class="genre-toggle" data-genre="Slice of Life">Slice of Life</div>
+    <div class="genre-toggle" data-genre="School Life">School Life</div>
+    <div class="genre-toggle" data-genre="Sports">Sports</div>
+    <div class="genre-toggle" data-genre="Music">Music</div>
+    <div class="genre-toggle" data-genre="Historical">Historical</div>
+    <div class="genre-toggle" data-genre="Mecha">Mecha</div>
+    <div class="genre-toggle" data-genre="Police">Police</div>
+    <div class="genre-toggle" data-genre="Medical">Medical</div>
+    <div class="genre-toggle" data-genre="Cooking">Cooking</div>
+    <div class="genre-toggle" data-genre="Survival">Survival</div>
+    <div class="genre-toggle" data-genre="Post-Apocalíptico">Post-Apocalíptico</div>
+    <div class="genre-toggle" data-genre="Sci-Fi">Sci-Fi</div>
+    <div class="genre-toggle" data-genre="Espacial">Espacial</div>
+    <div class="genre-toggle" data-genre="Viaje en el Tiempo">Viaje en el Tiempo</div>
+    <div class="genre-toggle" data-genre="Transmigración">Transmigración</div>
+    <div class="genre-toggle" data-genre="Regreso">Regreso</div>
+    <div class="genre-toggle" data-genre="Vida Pasada">Vida Pasada</div>
+    <div class="genre-toggle" data-genre="Segunda Vida">Segunda Vida</div>
+    <div class="genre-toggle" data-genre="Mundo Paralelo">Mundo Paralelo</div>
+    <div class="genre-toggle" data-genre="Dimensión">Dimensión</div>
+    <div class="genre-toggle" data-genre="Portal">Portal</div>
+    <div class="genre-toggle" data-genre="Hechicería">Hechicería</div>
+    <div class="genre-toggle" data-genre="Alquimia">Alquimia</div>
+    <div class="genre-toggle" data-genre="Invocación">Invocación</div>
+    <div class="genre-toggle" data-genre="Espíritus">Espíritus</div>
+    <div class="genre-toggle" data-genre="Demonios">Demonios</div>
+    <div class="genre-toggle" data-genre="Ángeles">Ángeles</div>
+    <div class="genre-toggle" data-genre="Dioses">Dioses</div>
+    <div class="genre-toggle" data-genre="Mitología">Mitología</div>
+    <div class="genre-toggle" data-genre="Folklore">Folklore</div>
+    <div class="genre-toggle" data-genre="Leyendas">Leyendas</div>
+    <div class="genre-toggle" data-genre="Héroes">Héroes</div>
+    <div class="genre-toggle" data-genre="Anti-Héroes">Anti-Héroes</div>
+    <div class="genre-toggle" data-genre="Exploración">Exploración</div>
+    <div class="genre-toggle" data-genre="Aventura Urbana">Aventura Urbana</div>
+    <div class="genre-toggle" data-genre="Fantasía Urbana">Fantasía Urbana</div>
+    <div class="genre-toggle" data-genre="Romance Urbano">Romance Urbano</div>
+    <div class="genre-toggle" data-genre="Drama Urbano">Drama Urbano</div>
+    <div class="genre-toggle" data-genre="Comedia Urbana">Comedia Urbana</div>
+    <div class="genre-toggle" data-genre="Horror Urbano">Horror Urbano</div>
+    <div class="genre-toggle" data-genre="Misterio Urbano">Misterio Urbano</div>
+    <div class="genre-toggle" data-genre="Suspenso Urbano">Suspenso Urbano</div>
+    <div class="genre-toggle" data-genre="Psicológico Urbano">Psicológico Urbano</div>
+    <div class="genre-toggle" data-genre="Sobrenatural Urbano">Sobrenatural Urbano</div>
+    <div class="genre-toggle" data-genre="Artes Marciales Urbanas">Artes Marciales Urbanas</div>
+    <div class="genre-toggle" data-genre="Cultivación Urbana">Cultivación Urbana</div>
+    <div class="genre-toggle" data-genre="Militar Urbano">Militar Urbano</div>
+    <div class="genre-toggle" data-genre="Crimen Urbano">Crimen Urbano</div>
+    <div class="genre-toggle" data-genre="Deportes Urbanos">Deportes Urbanos</div>
+    <div class="genre-toggle" data-genre="Gore Urbano">Gore Urbano</div>
+    <div class="genre-toggle" data-genre="Adulto Urbano">Adulto Urbano</div>
+    <div class="genre-toggle" data-genre="Yuri Urbano">Yuri Urbano</div>
+    <div class="genre-toggle" data-genre="Yaoi Urbano">Yaoi Urbano</div>
+    <div class="genre-toggle" data-genre="Shoujo Urbano">Shoujo Urbano</div>
+    <div class="genre-toggle" data-genre="Shounen Urbano">Shounen Urbano</div>
+    <div class="genre-toggle" data-genre="Josei Urbano">Josei Urbano</div>
+    <div class="genre-toggle" data-genre="Seinen Urbano">Seinen Urbano</div>
+    <div class="genre-toggle" data-genre="Ecchi Urbano">Ecchi Urbano</div>
+    <div class="genre-toggle" data-genre="Hentai Urbano">Hentai Urbano</div>
+    <div class="genre-toggle" data-genre="Slice of Life Urbano">Slice of Life Urbano</div>
+    <div class="genre-toggle" data-genre="School Life Urbano">School Life Urbano</div>
+    <div class="genre-toggle" data-genre="Sports Urbano">Sports Urbano</div>
+    <div class="genre-toggle" data-genre="Music Urbano">Music Urbano</div>
+    <div class="genre-toggle" data-genre="Historical Urbano">Historical Urbano</div>
+    <div class="genre-toggle" data-genre="Mecha Urbano">Mecha Urbano</div>
+    <div class="genre-toggle" data-genre="Police Urbano">Police Urbano</div>
+    <div class="genre-toggle" data-genre="Medical Urbano">Medical Urbano</div>
+    <div class="genre-toggle" data-genre="Cooking Urbano">Cooking Urbano</div>
+    <div class="genre-toggle" data-genre="Survival Urbano">Survival Urbano</div>
+    <div class="genre-toggle" data-genre="Post-Apocalíptico Urbano">Post-Apocalíptico Urbano</div>
+    <div class="genre-toggle" data-genre="Sci-Fi Urbano">Sci-Fi Urbano</div>
+    <div class="genre-toggle" data-genre="Espacial Urbano">Espacial Urbano</div>
+    <div class="genre-toggle" data-genre="Tiempo Urbano">Tiempo Urbano</div>
+    <div class="genre-toggle" data-genre="Viaje en el Tiempo Urbano">Viaje en el Tiempo Urbano</div>
+    <div class="genre-toggle" data-genre="Regresión Urbana">Regresión Urbana</div>
+    <div class="genre-toggle" data-genre="Reencarnación Urbana">Reencarnación Urbana</div>
+    <div class="genre-toggle" data-genre="Isekai Urbano">Isekai Urbano</div>
+    <div class="genre-toggle" data-genre="Transmigración Urbana">Transmigración Urbana</div>
+    <div class="genre-toggle" data-genre="Regreso Urbano">Regreso Urbano</div>
+    <div class="genre-toggle" data-genre="Vida Pasada Urbana">Vida Pasada Urbana</div>
+    <div class="genre-toggle" data-genre="Segunda Vida Urbana">Segunda Vida Urbana</div>
+    <div class="genre-toggle" data-genre="Mundo Paralelo Urbano">Mundo Paralelo Urbano</div>
+    <div class="genre-toggle" data-genre="Dimensión Urbana">Dimensión Urbana</div>
+    <div class="genre-toggle" data-genre="Portal Urbano">Portal Urbano</div>
+    <div class="genre-toggle" data-genre="Magia Urbana">Magia Urbana</div>
+    <div class="genre-toggle" data-genre="Hechicería Urbana">Hechicería Urbana</div>
+    <div class="genre-toggle" data-genre="Alquimia Urbana">Alquimia Urbana</div>
+    <div class="genre-toggle" data-genre="Invocación Urbana">Invocación Urbana</div>
+    <div class="genre-toggle" data-genre="Espíritus Urbanos">Espíritus Urbanos</div>
+    <div class="genre-toggle" data-genre="Demonios Urbanos">Demonios Urbanos</div>
+    <div class="genre-toggle" data-genre="Ángeles Urbanos">Ángeles Urbanos</div>
+    <div class="genre-toggle" data-genre="Dioses Urbanos">Dioses Urbanos</div>
+    <div class="genre-toggle" data-genre="Mitología Urbana">Mitología Urbana</div>
+    <div class="genre-toggle" data-genre="Folklore Urbano">Folklore Urbano</div>
+    <div class="genre-toggle" data-genre="Leyendas Urbanas">Leyendas Urbanas</div>
+    <div class="genre-toggle" data-genre="Héroes Urbanos">Héroes Urbanos</div>
+    <div class="genre-toggle" data-genre="Villanos Urbanos">Villanos Urbanos</div>
+    <div class="genre-toggle" data-genre="Anti-Héroes Urbanos">Anti-Héroes Urbanos</div>
+    <div class="genre-toggle" data-genre="Supervivencia Urbana">Supervivencia Urbana</div>
+    <div class="genre-toggle" data-genre="Exploración Urbana">Exploración Urbana</div>
+</div>
+    </div>
+
+    <!-- SECCIÓN: IMAGEN Y DESCARGA -->
+    <div class="panel-section">
+        <h3 class="text-lg font-bold text-cyan-300 mb-4">🖼️ Imagen y Descarga</h3>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Imagen de Portada</label>
+                <input id="in-file" type="file" accept="image/*"
+                class="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-slate-800 file:text-white hover:file:bg-slate-700 cursor-pointer">
+            </div>
+
             <button onclick="saveCard()"
-            class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 py-4 rounded-xl font-bold transition-all shadow-lg mt-6 active:scale-95">
-                ⬇️ Descargar Card Ultra HD (4K)
+            class="w-full bg-cyan-600 hover:bg-cyan-500 py-4 rounded-xl font-bold transition-all shadow-lg active:scale-95">
+            ⬇️ Descargar Card Ultra HD (4K)
             </button>
         </div>
-
-        <!-- VISTA PREVIA -->
-        <div class="flex flex-col items-center justify-start sticky top-6">
-            <div id="capture-target" class="capture-area shadow-2xl border-none-style">
-                <img id="preview-img"
-                src="https://via.placeholder.com/400x600/020617/475569?text=Carga+tu+Portada"
-                alt="Preview">
-
-                <div id="card-overlay" class="card-overlay-gradient">
-                    <div id="status-badge" class="status-badge" style="display: none;"></div>
-                    <div class="card-content">
-                        <div id="card-genres" class="genre-container"></div>
-                        <h2 id="card-title">Título del Manhwa</h2>
-                        <p id="card-desc">Descripción del manhwa...</p>
-                        <div id="card-hashtags" class="hashtag-container"></div>
-                    </div>
-                </div>
-            </div>
-            <p class="text-slate-500 text-xs mt-4 font-bold uppercase tracking-widest">Vista Previa Real</p>
-        </div>
-
     </div>
+</div>
+</div>
+
+<!-- PREVIEW -->
+<div class="flex flex-col items-center">
+    <div id="capture-target" class="capture-area shadow-2xl">
+        <img id="preview-img"
+        src="https://via.placeholder.com/400x600/020617/475569?text=Carga+tu+Portada"
+        alt="Preview">
+
+        <div class="card-overlay">
+            <div id="status-badge" class="status-badge"></div>
+            <div class="card-content">
+                <div id="card-genres" class="genre-container"></div>
+                <h2 id="card-title">Título del Manhwa</h2>
+                <p id="card-desc">Descripción del manhwa...</p>
+                <div id="card-hashtags" class="hashtags"></div>
+            </div>
+        </div>
+    </div>
+    <p class="text-slate-500 text-xs mt-4 font-bold uppercase tracking-widest">Vista Previa Real</p>
+</div>
+
 </div>
 
 <script src="script.js"></script>
