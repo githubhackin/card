@@ -168,56 +168,274 @@ function saveCard() {
         return;
     }
     
-    const node = $('capture-target');
     const btn = event.target;
     const originalText = btn.innerHTML;
     btn.innerHTML = 'Generando imagen HD...';
     btn.disabled = true;
     
-    // Forzar tamaño fijo antes de capturar
-    const originalWidth = node.style.width;
-    const originalHeight = node.style.height;
-    node.style.width = '400px';
-    node.style.height = '600px';
+    // Crear un canvas temporal
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
     
-    setTimeout(() => {
-        domtoimage.toPng(node, {
-            width: 2000,
-            height: 3000,
-            quality: 1.0,
-            bgcolor: '#0f172a',
-            cacheBust: true,
-            imagePlaceholder: undefined,
-            filter: function(element) {
-                return true;
-            }
-        })
-        .then(dataUrl => {
-            // Restaurar tamaño original
-            node.style.width = originalWidth;
-            node.style.height = originalHeight;
+    // Dimensiones finales 4K
+    const finalWidth = 2000;
+    const finalHeight = 3000;
+    canvas.width = finalWidth;
+    canvas.height = finalHeight;
+    
+    // Obtener la imagen
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    
+    img.onload = function() {
+        // Dibujar fondo
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, finalWidth, finalHeight);
+        
+        // Dibujar imagen de portada (cover, centrada)
+        const imgRatio = img.width / img.height;
+        const canvasRatio = finalWidth / finalHeight;
+        let drawWidth, drawHeight, offsetX = 0, offsetY = 0;
+        
+        if (imgRatio > canvasRatio) {
+            drawHeight = finalHeight;
+            drawWidth = img.width * (finalHeight / img.height);
+            offsetX = (finalWidth - drawWidth) / 2;
+        } else {
+            drawWidth = finalWidth;
+            drawHeight = img.height * (finalWidth / img.width);
+            offsetY = (finalHeight - drawHeight) / 2;
+        }
+        
+        ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        
+        // Dibujar overlay según el diseño actual
+        const overlayGradients = {
+            gradient: ctx.createLinearGradient(0, finalHeight, 0, 0),
+            dark: ctx.createLinearGradient(0, finalHeight, 0, 0),
+            neon: ctx.createLinearGradient(0, finalHeight, 0, 0),
+            purple: ctx.createLinearGradient(0, finalHeight, 0, 0),
+            minimal: ctx.createLinearGradient(0, finalHeight, 0, 0),
+            fire: ctx.createLinearGradient(0, finalHeight, 0, 0)
+        };
+        
+        // Configurar gradientes
+        overlayGradients.gradient.addColorStop(0, 'rgba(0,0,0,1)');
+        overlayGradients.gradient.addColorStop(0.35, 'rgba(0,0,0,0.85)');
+        overlayGradients.gradient.addColorStop(0.6, 'rgba(0,0,0,0.4)');
+        overlayGradients.gradient.addColorStop(1, 'rgba(0,0,0,0)');
+        
+        overlayGradients.dark.addColorStop(0, 'rgba(0,0,0,0.95)');
+        overlayGradients.dark.addColorStop(0.5, 'rgba(0,0,0,0.7)');
+        overlayGradients.dark.addColorStop(1, 'rgba(0,0,0,0)');
+        
+        overlayGradients.neon.addColorStop(0, 'rgba(6,182,212,0.3)');
+        overlayGradients.neon.addColorStop(0.4, 'rgba(0,0,0,0.85)');
+        overlayGradients.neon.addColorStop(1, 'rgba(0,0,0,0)');
+        
+        overlayGradients.purple.addColorStop(0, 'rgba(139,92,246,0.4)');
+        overlayGradients.purple.addColorStop(0.4, 'rgba(0,0,0,0.8)');
+        overlayGradients.purple.addColorStop(1, 'rgba(0,0,0,0)');
+        
+        overlayGradients.minimal.addColorStop(0, 'rgba(0,0,0,0.8)');
+        overlayGradients.minimal.addColorStop(0.3, 'rgba(0,0,0,0.3)');
+        overlayGradients.minimal.addColorStop(0.6, 'rgba(0,0,0,0)');
+        
+        overlayGradients.fire.addColorStop(0, 'rgba(220,38,38,0.4)');
+        overlayGradients.fire.addColorStop(0.4, 'rgba(0,0,0,0.85)');
+        overlayGradients.fire.addColorStop(1, 'rgba(0,0,0,0)');
+        
+        ctx.fillStyle = overlayGradients[currentDesign] || overlayGradients.gradient;
+        ctx.fillRect(0, 0, finalWidth, finalHeight);
+        
+        // Configurar texto
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'left';
+        
+        const padding = 130;
+        let yPosition = finalHeight - padding;
+        
+        // Dibujar estado (si existe)
+        const statusElement = $('status-badge');
+        if (statusElement.style.display !== 'none') {
+            const statusText = statusElement.textContent;
+            ctx.font = 'bold 60px PoppinsEmbed, sans-serif';
+            const statusWidth = ctx.measureText(statusText).width;
+            const statusPadding = 40;
+            const statusX = finalWidth - statusWidth - statusPadding * 2 - 100;
+            const statusY = 100;
             
+            // Fondo del badge
+            ctx.fillStyle = getStatusColor(statusElement.className);
+            ctx.beginPath();
+            ctx.roundRect(statusX, statusY, statusWidth + statusPadding * 2, 80, 40);
+            ctx.fill();
+            
+            ctx.fillStyle = 'white';
+            ctx.fillText(statusText, statusX + statusPadding, statusY + 60);
+        }
+        
+        // Dibujar géneros
+        const genreElements = document.querySelectorAll('#card-genres .genre-pill');
+        if (genreElements.length > 0) {
+            ctx.font = 'bold 55px PoppinsEmbed, sans-serif';
+            let xPos = padding;
+            
+            genreElements.forEach(genre => {
+                const text = genre.textContent;
+                const textWidth = ctx.measureText(text).width;
+                const genrePadding = 30;
+                
+                // Fondo del género
+                ctx.fillStyle = 'rgba(71, 85, 105, 0.8)';
+                ctx.beginPath();
+                ctx.roundRect(xPos, yPosition - 60, textWidth + genrePadding * 2, 70, 15);
+                ctx.fill();
+                
+                // Texto del género
+                ctx.fillStyle = 'white';
+                ctx.fillText(text, xPos + genrePadding, yPosition - 15);
+                
+                xPos += textWidth + genrePadding * 2 + 40;
+            });
+            
+            yPosition += 80;
+        }
+        
+        // Dibujar título
+        const title = $('card-title').textContent;
+        ctx.font = '900 150px PoppinsEmbed, sans-serif';
+        ctx.fillStyle = 'white';
+        ctx.shadowColor = 'rgba(0,0,0,0.8)';
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetX = 4;
+        ctx.shadowOffsetY = 4;
+        
+        // Dividir título si es muy largo
+        const maxWidth = finalWidth - padding * 2;
+        const titleLines = wrapText(ctx, title, maxWidth);
+        titleLines.forEach(line => {
+            ctx.fillText(line, padding, yPosition);
+            yPosition += 160;
+        });
+        
+        // Dibujar descripción
+        const desc = $('card-desc').textContent;
+        if (desc && desc !== 'Descripción del manhwa...') {
+            ctx.font = '65px PoppinsEmbed, sans-serif';
+            ctx.fillStyle = '#cbd5e1';
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            
+            const descLines = wrapText(ctx, desc, maxWidth);
+            const maxDescLines = 8;
+            descLines.slice(0, maxDescLines).forEach(line => {
+                ctx.fillText(line, padding, yPosition);
+                yPosition += 85;
+            });
+            
+            yPosition += 30;
+        }
+        
+        // Dibujar hashtags
+        const hashtagElements = document.querySelectorAll('#card-hashtags .hashtag');
+        if (hashtagElements.length > 0) {
+            ctx.font = 'bold 55px PoppinsEmbed, sans-serif';
+            ctx.fillStyle = '#06b6d4';
+            ctx.shadowBlur = 10;
+            
+            let hashtagText = '';
+            hashtagElements.forEach((tag, index) => {
+                hashtagText += tag.textContent + (index < hashtagElements.length - 1 ? ' ' : '');
+            });
+            
+            ctx.fillText(hashtagText, padding, yPosition);
+        }
+        
+        // Dibujar borde si existe
+        if (currentBorder !== 'none') {
+            drawBorder(ctx, finalWidth, finalHeight);
+        }
+        
+        // Descargar
+        canvas.toBlob(blob => {
+            const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             const filename = ($('in-title').value || 'manhwa').replace(/\s+/g, '_').toLowerCase();
             a.download = `card-${filename}-4k.png`;
-            a.href = dataUrl;
+            a.href = url;
             a.click();
+            URL.revokeObjectURL(url);
             
             btn.innerHTML = 'Descargado';
             setTimeout(() => {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }, 2000);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            node.style.width = originalWidth;
-            node.style.height = originalHeight;
-            btn.innerHTML = 'Error. Intenta de nuevo';
-            setTimeout(() => {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }, 2000);
-        });
-    }, 800);
+        }, 'image/png', 1.0);
+    };
+    
+    img.onerror = function() {
+        btn.innerHTML = 'Error. Intenta de nuevo';
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }, 2000);
+    };
+    
+    img.src = $('preview-img').src;
+}
+
+// Función auxiliar para dividir texto en líneas
+function wrapText(ctx, text, maxWidth) {
+    const words = text.split(' ');
+    const lines = [];
+    let currentLine = words[0];
+    
+    for (let i = 1; i < words.length; i++) {
+        const testLine = currentLine + ' ' + words[i];
+        const metrics = ctx.measureText(testLine);
+        
+        if (metrics.width > maxWidth) {
+            lines.push(currentLine);
+            currentLine = words[i];
+        } else {
+            currentLine = testLine;
+        }
+    }
+    lines.push(currentLine);
+    return lines;
+}
+
+// Función para obtener color del estado
+function getStatusColor(className) {
+    if (className.includes('ongoing')) return 'rgba(34, 197, 94, 0.9)';
+    if (className.includes('completed')) return 'rgba(59, 130, 246, 0.9)';
+    if (className.includes('hiatus')) return 'rgba(234, 179, 8, 0.9)';
+    if (className.includes('cancelled')) return 'rgba(239, 68, 68, 0.9)';
+    return 'rgba(71, 85, 105, 0.8)';
+}
+
+// Función para dibujar bordes
+function drawBorder(ctx, width, height) {
+    const borderWidth = {
+        thin: 15,
+        thick: 30,
+        neon: 20,
+        gold: 20,
+        purple: 20
+    }[currentBorder] || 0;
+    
+    const borderColor = {
+        thin: '#ffffff',
+        thick: '#ffffff',
+        neon: '#06b6d4',
+        gold: '#fbbf24',
+        purple: '#a855f7'
+    }[currentBorder] || '#ffffff';
+    
+    ctx.strokeStyle = borderColor;
+    ctx.lineWidth = borderWidth;
+    ctx.strokeRect(borderWidth / 2, borderWidth / 2, width - borderWidth, height - borderWidth);
 }
